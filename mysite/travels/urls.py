@@ -3,7 +3,8 @@ from django.urls import path, include
 
 urlpatterns = [
     path('', index,name="index"),
-    path('travels/<slug:tr>/', travels),
+    path('travels/', travels),
+    path('about/', about),
     #path('travels/<int:trid>/', travels),
 
 ]
