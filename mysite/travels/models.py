@@ -6,17 +6,17 @@ from django.db import models
 from django.urls import reverse
 
 class Travel(models.Model):
-    title=models.CharField(max_length=255)
-    content = models.TextField(blank=True)
-    photo = models.ImageField(upload_to="photos/%Y/%m/%d/")
-    start_of_the_trip = models.DateTimeField()
-    end_of_the_trip = models.DateTimeField()
-    expense = models.CharField(max_length=255)
-    place = models.CharField(max_length=255)
-    time_create = models.DateTimeField(auto_now_add=True)
-    time_update = models.DateTimeField(auto_now=True)
-    is_published = models.BooleanField(default=True)
-    cat = models.ForeignKey('Category', on_delete=models.PROTECT, null=True)
+    title=models.CharField(max_length=255, verbose_name="Заголовок поста")
+    content = models.TextField(blank=True, verbose_name="Тесет поста")
+    photo = models.ImageField(upload_to="photos/%Y/%m/%d/", verbose_name="Фото")
+    start_of_the_trip = models.DateTimeField( verbose_name="Время начала путешествия")
+    end_of_the_trip = models.DateTimeField( verbose_name="Время окончания путешествия")
+    expense = models.CharField(max_length=255, verbose_name="Затраченные средства")
+    place = models.CharField(max_length=255, verbose_name="Место петешествия")
+    time_create = models.DateTimeField(auto_now_add=True, verbose_name="Время создания поста")
+    time_update = models.DateTimeField(auto_now=True, verbose_name="Время редактирования поста")
+    is_published = models.BooleanField(default=True, verbose_name="Опубликован?")
+    cat = models.ForeignKey('Category', on_delete=models.PROTECT, blank=True, null=True, verbose_name="Категория поста")
 
     def __str__(self):
         return self.title
@@ -24,8 +24,17 @@ class Travel(models.Model):
     def get_absolute_url(self):
         return reverse("travel", kwargs={"travel_id": self.pk})
 
+    class Meta:
+        verbose_name = 'Пост о путешествии'
+        verbose_name_plural = 'Посты о путешествии'
+        ordering = ['time_create', 'title']
+
 class Category(models.Model):
-    title=models.CharField(max_length=100 , db_index=True) 
+    title=models.CharField(max_length=100 , db_index=True, verbose_name="Название категории") 
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
