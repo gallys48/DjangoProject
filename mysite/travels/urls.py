@@ -6,7 +6,7 @@ urlpatterns = [
     path('travels/', travels, name="travels"),
     path('about/', about, name="about"),
     path('addtravel/', addtravel, name="add_travel"),
-    path('travels/<int:travel_id>', show_travel, name="travel"),
+    # path('travels/<int:travel_id>', show_travel, name="show_travel"),
     #path('travels/<int:trid>/', travels),
 
 ]
