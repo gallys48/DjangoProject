@@ -1,6 +1,6 @@
 from tkinter import Menu
 from django.http import HttpResponse, HttpResponseNotFound
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import *
 
 menu = [{"title":"О сайте", 'url_name':'about'}, 
@@ -43,5 +43,13 @@ def addtravel(request):
 def pageNotFound(request, exception):
     return HttpResponseNotFound("<h1>Страница не найдена</h1>")
 
-def show_travel(request, travel_id):
-    return HttpResponse(f"<h1>Отображение поста с id: {travel_id}</h1>")
+def show_travel(request, travel_slug):
+    travel = get_object_or_404(Travel, slug=travel_slug)
+
+    context={
+        'travel' : travel,
+        'menu' : menu,
+        'title': travel.title
+    }
+
+    return render(request, 'travels/travel.html', context=context)

@@ -1,5 +1,7 @@
 from email.policy import default
+from enum import unique
 from pyexpat import model
+from tabnanny import verbose
 from turtle import title
 from unittest.util import _MAX_LENGTH
 from django.db import models
@@ -7,6 +9,7 @@ from django.urls import reverse
 
 class Travel(models.Model):
     title=models.CharField(max_length=255, verbose_name="Заголовок поста")
+    slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
     content = models.TextField(blank=True, verbose_name="Тесет поста")
     photo = models.ImageField(upload_to="photos/%Y/%m/%d/", verbose_name="Фото")
     start_of_the_trip = models.DateTimeField( verbose_name="Время начала путешествия")
@@ -16,13 +19,13 @@ class Travel(models.Model):
     time_create = models.DateTimeField(auto_now_add=True, verbose_name="Время создания поста")
     time_update = models.DateTimeField(auto_now=True, verbose_name="Время редактирования поста")
     is_published = models.BooleanField(default=True, verbose_name="Опубликован?")
-    cat = models.ForeignKey('Category', on_delete=models.PROTECT, blank=True, null=True, verbose_name="Категория поста")
+    cat = models.ForeignKey('Category', on_delete=models.PROTECT, blank=True, verbose_name="Категория поста")
 
     def __str__(self):
         return self.title
     
     def get_absolute_url(self):
-        return reverse("travel", kwargs={"travel_id": self.pk})
+        return reverse("travel", kwargs={"travel_slug": self.slug})
 
     class Meta:
         verbose_name = 'Пост о путешествии'
@@ -31,6 +34,7 @@ class Travel(models.Model):
 
 class Category(models.Model):
     title=models.CharField(max_length=100 , db_index=True, verbose_name="Название категории") 
+    slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
 
     def __str__(self):
         return self.title

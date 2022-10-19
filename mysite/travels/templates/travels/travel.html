@@ -1,0 +1,12 @@
+{% extends 'travels/base.html' %}
+
+
+{% block content %}
+  <h1>{{travel.title}}</h1> 
+  
+    {%if travel.photo%}
+        <p><img class="img-arcticle-left thumb" src="{{travel.photo.url}}"></p>
+    {%endif%}
+        
+    <p>{{travel.content|linebreaks}}</p>
+{% endblock content %}
