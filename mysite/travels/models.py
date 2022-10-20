@@ -10,10 +10,10 @@ from django.urls import reverse
 class Travel(models.Model):
     title=models.CharField(max_length=255, verbose_name="Заголовок поста")
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
-    content = models.TextField(blank=True, verbose_name="Тесет поста")
+    content = models.TextField(blank=True, verbose_name="Текст поста")
     photo = models.ImageField(upload_to="photos/%Y/%m/%d/", verbose_name="Фото")
-    start_of_the_trip = models.DateTimeField( verbose_name="Время начала путешествия")
-    end_of_the_trip = models.DateTimeField( verbose_name="Время окончания путешествия")
+    start_of_the_trip = models.DateField( verbose_name="Дата начала путешествия")
+    end_of_the_trip = models.DateField( verbose_name="Дата окончания путешествия")
     expense = models.CharField(max_length=255, verbose_name="Затраченные средства")
     place = models.CharField(max_length=255, verbose_name="Место петешествия")
     time_create = models.DateTimeField(auto_now_add=True, verbose_name="Время создания поста")

@@ -1,6 +1,8 @@
 from tkinter import Menu
 from django.http import HttpResponse, HttpResponseNotFound
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+
+from  .forms import *
 from .models import *
 
 menu = [{"title":"О сайте", 'url_name':'about'}, 
@@ -32,10 +34,25 @@ def travels(request):
     return render(request, 'travels/travels.html', context=context)
 
 def addtravel(request):
+    form = AddTravelForm()
     context = {
         'menu':menu,
-        'title':'Создать пост'
+        'title':'Создать пост',
+        'form': form
     }
+
+    if request.method=='POST':
+        form=AddTravelForm(request.POST)
+        if form.is_valid():
+            #print(form.cleaned_data)
+            try:
+                Travel.objects.create(**form.cleaned_data)
+                return redirect('home')
+            except:
+                form.add_error(None, 'Ошибка добавления поста')
+    else:
+        form=AddTravelForm()
+
     return render(request, 'travels/addpost.html', context=context)
 
 
