@@ -2,10 +2,12 @@ from  .views import *
 from django.urls import path, include
 
 urlpatterns = [
-    path('', index,name="index"),
-    path('travels/', travels),
-    path('about/', about),
-    #path('travels/<int:trid>/', travels),
+    path('', index, name="index"),
+    path('travels/', TravelsList.as_view(), name="travels"),
+    path('about/', about, name="about"),
+    path('addtravel/', addtravel, name="add_travel"),
+    path('travels/<slug:travel_slug>', ShowTravel.as_view(), name="travel"),
+    path('category/<slug:cat_slug>', TravelsCategory.as_view(), name='category' )
 
 ]
 

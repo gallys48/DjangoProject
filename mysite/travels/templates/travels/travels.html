@@ -3,12 +3,21 @@
 
 {% block content %}
   <h1>{{title}}</h1> 
-  <ul>
+  <ul class="list-arcticles">
     {%for t in travels%}
     <li>
+        <div class="acrticle-panel">
+          <p class="first">Категория: {{t.cat}}</p>
+          <p class="last">Дата публикации: {{t.time_create|date:"d-m-Y"}}</p>
+        </div>
+        {%if t.photo%}
+          <p><img class="img-arcticle-left thumb" src="{{t.photo.url}}"></p>
+        {%endif%}
         <h2>{{t.title}}</h2>
-        <p>{{t.content}}</p>
-        <hr>
+        <p>{{t.content|linebreaks|truncatewords:50}}</p>
+        <div class="clear"></div>
+        <p class="link-read-post"><a href="{{ t.get_absolute_url }}">Читать пост</a></p>
+        
     </li>
     {% endfor %} 
 </ul>

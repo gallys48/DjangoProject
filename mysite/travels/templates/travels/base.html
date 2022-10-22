@@ -1,15 +1,23 @@
+{%load static%}
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
+    <script src="{%url 'js-catalog'%}"></script>
+    <script src="{%static '/admin/js/core.js'%}"></script>
     <title>{{title}}</title>
+    <script src="{%url 'js-catalog' %}"></script>
+    <script src="{% static '/admin/js/core.js' %}"></script>
+    <link  href="{%static static '/admin/css/widgets.css'%}" rel="stylesheet"/>
+    <link type="text/css" href="{%static 'travels/css/style.css'%}" rel="stylesheet"/>
+    <link  href="{%static 'admin/css/widgets.css'%}" rel="stylesheet"/>
 </head>
 <body>
 
 {% block mainmenu %}
 <ul>
     {%for m in menu%}
-    <li>{{m}}</li>
+    <li><a href='{%url m.url_name%}'> {{m.title}}</a></li>
     {% endfor %} 
 </ul>
 {% endblock mainmenu %}
