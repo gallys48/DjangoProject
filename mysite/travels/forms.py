@@ -28,3 +28,4 @@ class AddTravelForm(forms.Form):
         if len(title) > 200:
             raise ValidationError('Длина превышает 200 символов')
         return title
+
