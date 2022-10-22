@@ -42,15 +42,17 @@ def addtravel(request):
     }
 
     if request.method=='POST':
-        form=AddTravelForm(request.POST)
+        form=AddTravelForm(request.POST, request.FILES)
         if form.is_valid():
             #print(form.cleaned_data)
             try:
                 Travel.objects.create(**form.cleaned_data)
-                return redirect('home')
+                return redirect('travels')
             except:
-                form.add_error(None, 'Ошибка добавления поста')
+                form.add_error(None, "Ошибка добавления поста")
+
     else:
+        print("Ошибка")
         form=AddTravelForm()
 
     return render(request, 'travels/addpost.html', context=context)

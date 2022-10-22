@@ -4,7 +4,7 @@
 
 {% block content %}
   <h1>{{title}}</h1> 
-  <form action="{%url 'add_travel'%}" method="post">
+  <form action="{%url 'add_travel'%}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{form.media}}
     {%for f in form%}
