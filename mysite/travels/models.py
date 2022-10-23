@@ -30,7 +30,7 @@ class Travel(models.Model):
     class Meta:
         verbose_name = 'Пост о путешествии'
         verbose_name_plural = 'Посты о путешествии'
-        ordering = ['time_create', 'title']
+        ordering = ['-time_create', 'title']
 
 class Category(models.Model):
     title=models.CharField(max_length=100 , db_index=True, verbose_name="Название категории") 

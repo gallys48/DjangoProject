@@ -19,6 +19,11 @@
     {%for m in menu%}
     <li><a href='{%url m.url_name%}'> {{m.title}}</a></li>
     {% endfor %} 
+    {% if request.user.is_authenticated %}
+    {{user.username}}|<a href="{% url 'logout' %}">Выйти</a>
+    {%else%}
+    <a href="{% url 'register' %}">Регистрация</a> | <a href="{% url 'login' %}">Войти</a>
+    {%endif%}
 </ul>
 {% endblock mainmenu %}
     
