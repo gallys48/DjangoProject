@@ -14,12 +14,15 @@
     {%endif%}
     
     {%for c in cats%}
+    
         {%if c.pk == cat_selected%}
           <li class="selected">{{c.title}}</li>
         {%else%}
         <li><a href="{{c.get_absolute_url}}">{{c.title}}</a></li>
         {%endif%}
+    
     {%endfor%}
+    
   </ul>
   <ul class="list-arcticles">
     {%for t in travels%}

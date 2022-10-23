@@ -5,13 +5,14 @@ from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, CreateView
 
+from .utils import DataMixin
+
 from  .forms import *
 from .models import *
 
 menu = [{"title":"О сайте", 'url_name':'about'}, 
         {"title":"Создать пост", 'url_name':'add_travel'}, 
-        {"title":"Все посты", 'url_name':'travels'}, 
-        {"title":"Войти", 'url_name':'about'}]
+        {"title":"Все посты", 'url_name':'travels'},]
 
 def index(request):
     context = {
@@ -29,7 +30,7 @@ def about(request):
 
 
 
-class TravelsList(ListView):
+class TravelsList(DataMixin, ListView):
     paginate_by = 3
     model= Travel
     template_name= 'travels/travels.html'
@@ -37,11 +38,9 @@ class TravelsList(ListView):
 
     def get_context_data(self, *,object_list=None,**kwargs):
          context = super().get_context_data(**kwargs)
-         context['menu']=menu
-         context['title'] = 'Все посты'
-         context['cat_selected'] = 0
-         return context
-    
+         c_def = self.get_user_context(title="Все посты")
+         return dict(list(context.items())+(list(c_def.items())))
+
     def get_queryset(self):
         return Travel.objects.filter(is_published=True)
     
@@ -77,20 +76,20 @@ def pageNotFound(request, exception):
     return HttpResponseNotFound("<h1>Страница не найдена</h1>")
 
 
-class ShowTravel(DetailView):
+class ShowTravel(DataMixin, DetailView):
     model = Travel
     template_name = 'travels/travel.html'
     slug_url_kwarg = 'travel_slug'
     context_object_name = 'travel'
     def get_context_data(self, *,object_list=None,**kwargs):
-         context = super().get_context_data(**kwargs)
-         context['menu']=menu
-         context['title'] = context['travel']
-         return context
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title=context['travel'])
+        return dict(list(context.items())+(list(c_def.items())))
+        
 
 
 
-class TravelsCategory(ListView):
+class TravelsCategory(DataMixin, ListView):
     paginate_by = 3
     model= Travel
     template_name= 'travels/travels.html'
@@ -98,11 +97,11 @@ class TravelsCategory(ListView):
     allow_empty = False
 
     def get_context_data(self, *,object_list=None,**kwargs):
-         context = super().get_context_data(**kwargs)
-         context['menu']=menu
-         context['title'] = 'Категория - ' + str(context['travels'][0].cat)
-         context['cat_selected'] = context['travels'][0].cat_id
-         return context
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title='Категория - '+str(context['travels'][0].cat),
+                                      cat_selected=context['travels'][0].cat_id)
+        return dict(list(context.items())+(list(c_def.items())))
+        
     
     def get_queryset(self):
         return Travel.objects.filter(cat__slug=self.kwargs['cat_slug'], is_published=True)
