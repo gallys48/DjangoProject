@@ -30,6 +30,7 @@ def about(request):
 
 
 class TravelsList(ListView):
+    paginate_by = 3
     model= Travel
     template_name= 'travels/travels.html'
     context_object_name= 'travels'
@@ -90,6 +91,7 @@ class ShowTravel(DetailView):
 
 
 class TravelsCategory(ListView):
+    paginate_by = 3
     model= Travel
     template_name= 'travels/travels.html'
     context_object_name= 'travels'
