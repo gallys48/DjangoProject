@@ -18,7 +18,6 @@ class AddTravelForm(forms.Form):
     end_of_the_trip = forms.DateField(label='Дата окончания путешествия', widget=AdminDateWidget)
     expense = forms.CharField(max_length=255, label='Затраты на путешествие')
     place = forms.CharField(max_length=255, label='Место путешествия')
-    is_published = forms.BooleanField(label='Опубликован', required=False, initial=True)
     cat = forms.ModelChoiceField(queryset=Category.objects.all(),label='Категория', empty_label="Категория не выбрана")
     # class Meta:
     #     model = Travel
