@@ -1,9 +1,10 @@
 from django.contrib.auth.views import LoginView
 from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import *
 from django.contrib.auth.forms import *
 from django.contrib.auth import logout, login
+from django.contrib.auth.decorators import login_required
 from django.urls import *
 from .utils import DataMixin
 
@@ -14,21 +15,35 @@ menu = [{"title":"О сайте", 'url_name':'about'},
         {"title":"Создать пост", 'url_name':'add_travel'}, 
         {"title":"Все посты", 'url_name':'travels'},]
 
-def index(request):
-    context = {
-        'menu':menu,
-        'title':'Главная страница'
-    }
-    return render(request, 'travels/index.html', context=context)
+class IndexPage(DataMixin, TemplateView):
+    template_name= 'travels/index.html'
+    
+    def get_context_data(self, *,object_list=None,**kwargs):
+         context = super().get_context_data(**kwargs)
+         c_def = self.get_user_context(title="Главная страница")
+         return dict(list(context.items())+(list(c_def.items())))
+     
+# def index(request):
+#     context = {
+#         'menu':menu,
+#         'title':'Главная страница'
+#     }
+#     return render(request, 'travels/index.html', context=context)
 
-def about(request):
-    context = {
-        'menu':menu,
-        'title':'О сайте'
-    }
-    return render(request, 'travels/about.html', context=context)
+# def about(request):
+#     context = {
+#         'menu':menu,
+#         'title':'О сайте'
+#     }
+#     return render(request, 'travels/about.html', context=context)
 
-
+class AboutPage(DataMixin, TemplateView):
+    template_name= 'travels/about.html'
+    
+    def get_context_data(self, *,object_list=None,**kwargs):
+         context = super().get_context_data(**kwargs)
+         c_def = self.get_user_context(title="О сайте")
+         return dict(list(context.items())+(list(c_def.items())))
 
 class TravelsList(DataMixin, ListView):
     paginate_by = 3
@@ -45,7 +60,7 @@ class TravelsList(DataMixin, ListView):
         return Travel.objects.filter(is_published=True)
     
 
-
+@login_required
 def addtravel(request):
     form = AddTravelForm()
     context = {
@@ -123,7 +138,7 @@ class RegisterUser(DataMixin, CreateView):
 
 class LoginUser(DataMixin, LoginView):
     form_class = LoginUserForm
-    template_name = 'travels/register.html'
+    template_name = 'travels/login.html'
     success_url = reverse_lazy('travels')
     def get_context_data(self, *,object_list=None,**kwargs):
         context = super().get_context_data(**kwargs)
