@@ -5,9 +5,11 @@ from tabnanny import verbose
 from turtle import title
 from unittest.util import _MAX_LENGTH
 from django.db import models
+from django.contrib.auth.models import User
 from django.urls import reverse
 
 class Travel(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     title=models.CharField(max_length=255, verbose_name="Заголовок поста")
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
     content = models.TextField(blank=True, verbose_name="Текст поста")

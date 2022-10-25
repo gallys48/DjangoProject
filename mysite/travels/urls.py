@@ -5,6 +5,7 @@ from django.urls import path, include
 urlpatterns = [
     path('', IndexPage.as_view(), name="index"),
     path('travels/', TravelsList.as_view(), name="travels"),
+    path('usertravels/', UserTravelsList.as_view(), name="usertravels"),
     path('about/', AboutPage.as_view(), name="about"),
     path('register/', RegisterUser.as_view(), name="register"),
     path('login/', LoginUser.as_view(), name="login"),

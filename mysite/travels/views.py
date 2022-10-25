@@ -69,12 +69,12 @@ def addtravel(request):
         'form': form
     }
 
-    if request.method=='POST':
+    if request.method=='POST':       
         form=AddTravelForm(request.POST, request.FILES)
         if form.is_valid():
             #print(form.cleaned_data)
             try:
-                Travel.objects.create(**form.cleaned_data)
+                Travel.objects.create(author=request.user,**form.cleaned_data)
                 return redirect('travels')
             except:
                 form.add_error(None, "Ошибка добавления поста")
@@ -148,3 +148,17 @@ class LoginUser(DataMixin, LoginView):
 def logout_user(request):
     logout(request)
     return redirect('login')
+
+class UserTravelsList(DataMixin, ListView):
+    paginate_by = 3
+    model= Travel
+    template_name= 'travels/uset_travels.html'
+    context_object_name= 'travels'
+
+    def get_context_data(self, *,object_list=None,**kwargs):
+         context = super().get_context_data(**kwargs)
+         c_def = self.get_user_context(title='Посты пользователя '+str(context['travels'][0].author))
+         return dict(list(context.items())+(list(c_def.items())))
+
+    def get_queryset(self):
+        return Travel.objects.filter(author=self.request.user)

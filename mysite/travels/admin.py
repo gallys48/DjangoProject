@@ -4,7 +4,7 @@ from .models import *
 
 
 class TravelAdmin(admin.ModelAdmin):
-    list_display = ("id", "title", "time_create", "photo", "is_published", )
+    list_display = ("id", "author","title", "time_create", "photo", "is_published", )
     list_editable = ("is_published",)
     prepopulated_fields = {"slug" :("title",)}
 
