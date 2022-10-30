@@ -1,6 +1,8 @@
 from atexit import register
 from  .views import *
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('', IndexPage.as_view(), name="index"),
@@ -14,6 +16,6 @@ urlpatterns = [
     path('travels/<slug:travel_slug>', ShowTravel.as_view(), name="travel"),
     path('category/<slug:cat_slug>', TravelsCategory.as_view(), name='category' )
 
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler404 = pageNotFound

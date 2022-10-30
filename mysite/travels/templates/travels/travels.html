@@ -4,58 +4,92 @@
 
 
 {% block content %}
+<div class="headline">
+  <h1><span>Все посты</span></h1>
+</div>
+  <nav class="navbar navbar-expand-lg bg-light rounded">
+    <div class="container">
+      <a class="navbar-brand"><ya-tr-span data-index="81-0" data-translated="true" data-source-lang="en" data-target-lang="ru" data-value="Navbar" data-translation="Панель rfnt" data-ch="0" data-type="trSpan">Выбор категории путешествия:</ya-tr-span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample09" aria-controls="navbarsExample09" aria-expanded="false" >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          {%if cat_selected == 0 %}
+          <li class="selected">Все категории</li>
+      {% else %}
+      <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="{%url 'travels'%}"><ya-tr-span data-index="82-0" data-translated="true" data-source-lang="en" data-target-lang="ru" data-value="Home" data-translation="Отдых" data-ch="0" data-type="trSpan">Все категории</ya-tr-span></a>
+      </li>
+      {%endif%}
+      
+      {%for c in cats%}
+          {%if c.pk == cat_selected%}
+            <li class="selected">{{c.title}}</li>
+          {%else%}
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{{c.get_absolute_url}}"><ya-tr-span data-index="82-0" data-translated="true" data-source-lang="en" data-target-lang="ru" data-value="Home" data-translation="Отдых" data-ch="0" data-type="trSpan">{{c.title}}</ya-tr-span></a>
+          </li>
+          {%endif%}
+      {%endfor%}
+        </ul>
+      </div>
+    </div>
+  </nav>
   {%get_categories as cats%}
-  <h1>{{title}}</h1> 
-  <ul id ="leftchapters">
-    {%if cat_selected == 0 %}
-        <li class="selected">Все категории</li>
-    {% else %}
-        <li><a href="{%url 'travels'%}">Все категории</a></li>
-    {%endif%}
+  
     
-    {%for c in cats%}
-    
-        {%if c.pk == cat_selected%}
-          <li class="selected">{{c.title}}</li>
-        {%else%}
-        <li><a href="{{c.get_absolute_url}}">{{c.title}}</a></li>
-        {%endif%}
-    
-    {%endfor%}
-    
-  </ul>
+  
   <ul class="list-arcticles">
     {%for t in travels%}
     <li>
-        <div class="acrticle-panel">
-          <p class="first">Автор: {{t.author}}</p>
-          <p class="first">Категория: {{t.cat}}</p>
-          <p class="last">Дата публикации: {{t.time_create|date:"d-m-Y"}}</p>
+      <div class="my-3 p-3 bg-body rounded shadow-sm">
+        <div class="row featurette">
+          
+          <div class="col-md-7">
+            <p class="first">Автор: {{t.author}}</p>
+            <p class="first">Категория: {{t.cat}}</p>
+            <p class="last">Дата публикации: {{t.time_create|date:"d-m-Y"}}</p>
+            <h2>{{t.title}}</h2>
+            <p>{{t.content|linebreaks|truncatewords:50}}</p>
+          </div>
+          <div class="col-md-5">
+              {%if t.photo%}
+                <p><img class="img-arcticle-left thumb" width="400" height="400" src="{{t.photo.url}}"></p>
+              {%endif%}
+          </div>
+          <a href="{{ t.get_absolute_url }}"><button   class="header__btn">Читать пост</button></a>
         </div>
-        {%if t.photo%}
-          <p><img class="img-arcticle-left thumb" src="{{t.photo.url}}"></p>
-        {%endif%}
-        <h2>{{t.title}}</h2>
-        <p>{{t.content|linebreaks|truncatewords:50}}</p>
-        <div class="clear"></div>
-        <p class="link-read-post"><a href="{{ t.get_absolute_url }}">Читать пост</a></p>
+      </div>
         
-    </li>
+        
+      </div>
+        <div class="acrticle-panel">
+          
+        </div>
+      </li>
     {% endfor %} 
   </ul>
 {%if page_obj.has_other_pages%}
-  <nav class='list-pages'>
-    <ul>
+  <ul class="pagination pagination-sm">
       {%for p in paginator.page_range%}
       {% if page_obj.number == p %}
-      <li class="page-num page-num-selected">{{p}}</li>
+      <li class="page-item active" aria-current="page">{{p}}</li>
       {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
-      <li class="page-num">
-        <a href="?page={{p}}">{{p}}</a>
+      <li class="page-item">
+        <a class="page-link" href="?page={{p}}">{{p}}</a>
       </li>
       {%endif%}
       {%endfor%}
-    </ul>
-  </nav>
+  </ul>
+  
 {%endif%}
 {% endblock content %}
+<ul class="pagination pagination-sm">
+  <li class="page-item"><a class="page-link" href="#">1</a></li>
+  <li class="page-item active" aria-current="page">
+    <a class="page-link" href="#">2</a>
+  </li>
+  <li class="page-item"><a class="page-link" href="#">3</a></li>
+</ul>
