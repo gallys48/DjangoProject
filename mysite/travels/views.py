@@ -83,7 +83,7 @@ def addtravel(request):
         print("Ошибка")
         form=AddTravelForm()
 
-    return render(request, 'travels/addpost.html', context=context)
+    return render(request, 'travels/add_post.html', context=context)
 
 
 
@@ -96,6 +96,28 @@ class ShowTravel(DataMixin, DetailView):
     template_name = 'travels/travel.html'
     slug_url_kwarg = 'travel_slug'
     context_object_name = 'travel'
+    def get_context_data(self, *,object_list=None,**kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title=context['travel'])
+        return dict(list(context.items())+(list(c_def.items())))
+
+class UpdateTravel(DataMixin, UpdateView):
+    model = Travel
+    template_name = 'travels/update_post.html'
+    slug_url_kwarg = 'travel_slug'
+    success_url = reverse_lazy('usertravels')
+    fields = ['title', 'content', 'photo', 'start_of_the_trip', 'end_of_the_trip', 'expense', 'place', 'cat']
+    def get_context_data(self, *,object_list=None,**kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title=context['travel'])
+        return dict(list(context.items())+(list(c_def.items())))
+
+class DeleteTravel(DataMixin, DeleteView):
+    model = Travel
+    template_name = 'travels/delete_post.html'
+    slug_url_kwarg = 'travel_slug'
+    success_url = reverse_lazy('usertravels')
+    fields = ['title', 'slug', 'content', 'photo', 'start_of_the_trip', 'end_of_the_trip', 'expense', 'place', 'cat']
     def get_context_data(self, *,object_list=None,**kwargs):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title=context['travel'])
@@ -152,8 +174,9 @@ def logout_user(request):
 class UserTravelsList(DataMixin, ListView):
     paginate_by = 3
     model= Travel
-    template_name= 'travels/uset_travels.html'
+    template_name= 'travels/user_travels.html'
     context_object_name= 'travels'
+    allow_empty = False
 
     def get_context_data(self, *,object_list=None,**kwargs):
          context = super().get_context_data(**kwargs)

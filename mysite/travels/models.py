@@ -6,7 +6,12 @@ from turtle import title
 from unittest.util import _MAX_LENGTH
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.text import slugify
 from django.urls import reverse
+
+def gen_slug(s):
+  new_slug = slugify(s, allow_unicode=True)
+  return new_slug
 
 class Travel(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -28,6 +33,16 @@ class Travel(models.Model):
     
     def get_absolute_url(self):
         return reverse("travel", kwargs={"travel_slug": self.slug})
+    
+    def get_update_url(self):
+        return reverse("travel_update", kwargs={"travel_slug": self.slug})
+    
+    def get_delete_url(self):
+        return reverse("travel_delete", kwargs={"travel_slug": self.slug})
+    
+    def save(self, *args, **kwargs):
+        self.slug = gen_slug(self.title)
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'Пост о путешествии'

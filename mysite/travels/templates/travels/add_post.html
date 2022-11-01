@@ -1,12 +1,12 @@
 {% extends 'travels/base.html' %}
-
+{% load static%}
 
 
 {% block content %}
 <div  class="addpost">
   <div class="row">
     <div class="col-lg-5 ml-auto">
-      <img src="/DjangoProject/mysite/travels/static/travels/img/Photo.png" >
+      <img src="{%static 'travels/img/Photo.png'%}" alt="tinyone" class="logo">
       
     </div>
     <div class="col-lg-7" >
@@ -25,6 +25,5 @@
     </div>
   </div>
 </div>
-  <h1>{{title}}</h1> 
   
 {% endblock content %}
