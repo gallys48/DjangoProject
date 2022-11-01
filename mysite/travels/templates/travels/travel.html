@@ -2,11 +2,20 @@
 
 
 {% block content %}
-  <h1>{{travel.title}}</h1> 
-  
-    {%if travel.photo%}
-        <p><img class="img-arcticle-left thumb" src="{{travel.photo.url}}"></p>
-    {%endif%}
-        
-    <p>{{travel.content|linebreaks}}</p>
+<li>
+  <div class="my-3 p-4 rounded shadow">
+    <div class="row featurette">
+      <div class="col-md-7">
+        <h2>{{travel.title}}</h2>
+        <p>{{travel.content|linebreaks}}</p>
+      </div>
+      <div class="col-md-5">
+          {%if travel.photo%}
+            <p><img class="img-arcticle-left thumb" width="400" height="400" src="{{travel.photo.url}}"></p>
+          {%endif%}
+      </div>
+      
+    </div>
+  </div>
+</li>
 {% endblock content %}

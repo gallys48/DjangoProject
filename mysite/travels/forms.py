@@ -13,14 +13,14 @@ from .models import *
 
 
 class AddTravelForm(forms.Form):
-    title = forms.CharField(max_length=255, label='Заголовок')
-    slug = forms.SlugField(max_length=255, label='URL')
-    content = forms.CharField(widget=forms.Textarea(attrs={'cols':60, 'rows': 10}), label='Текст поста')
+    title = forms.CharField(max_length=255, label='Заголовок', widget=forms.TextInput(attrs={'class':'form-input'}))
+    slug = forms.SlugField(max_length=255, label='URL', widget=forms.TextInput(attrs={'class':'form-input'}))
+    content = forms.CharField(widget=forms.Textarea(attrs={'cols':60, 'rows': 10, 'class':'form-input'}),  label='Текст поста')
     photo = forms.ImageField(label='Фото поста')
-    start_of_the_trip = forms.DateField(label='Дата начала путешествия', widget=AdminDateWidget)
-    end_of_the_trip = forms.DateField(label='Дата окончания путешествия', widget=AdminDateWidget)
-    expense = forms.CharField(max_length=255, label='Затраты на путешествие')
-    place = forms.CharField(max_length=255, label='Место путешествия')
+    start_of_the_trip = forms.DateField(label='Дата начала путешествия', widget=AdminDateWidget(attrs={'class':'form-input'}))
+    end_of_the_trip = forms.DateField(label='Дата окончания путешествия', widget=AdminDateWidget(attrs={'class':'form-input'}))
+    expense = forms.CharField(max_length=255, label='Затраты на путешествие', widget=forms.TextInput(attrs={'class':'form-input'}))
+    place = forms.CharField(max_length=255, label='Место путешествия', widget=forms.TextInput(attrs={'class':'form-input'}))
     cat = forms.ModelChoiceField(queryset=Category.objects.all(),label='Категория', empty_label="Категория не выбрана")
     # class Meta:
     #     model = Travel

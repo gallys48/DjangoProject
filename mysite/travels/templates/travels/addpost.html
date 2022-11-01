@@ -3,13 +3,28 @@
 
 
 {% block content %}
+<div  class="addpost">
+  <div class="row">
+    <div class="col-lg-5 ml-auto">
+      <img src="/DjangoProject/mysite/travels/static/travels/img/Photo.png" >
+      
+    </div>
+    <div class="col-lg-7" >
+      <div class="add_post_right">
+        <div class="form_addpost">
+          <form  action="{%url 'add_travel'%}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{form.media}}
+            {%for f in form%}
+            <p><label class="form-label" for="{{f.id_for_label}}">{{f.label}}:</label>{{f}}</p>
+            {%endfor%}
+            <button type="submit" class="header__btn">Опубликовать</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
   <h1>{{title}}</h1> 
-  <form action="{%url 'add_travel'%}" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{form.media}}
-    {%for f in form%}
-    <p><label class="form-label" for="{{f.id_for_label}}">{{f.label}}:</label>{{f}}</p>
-    {%endfor%}
-    <button type="submit">Добавить</button>
-  </form>
+  
 {% endblock content %}

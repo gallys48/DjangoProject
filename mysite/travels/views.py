@@ -46,7 +46,7 @@ class AboutPage(DataMixin, TemplateView):
          return dict(list(context.items())+(list(c_def.items())))
 
 class TravelsList(DataMixin, ListView):
-    paginate_by = 3
+    paginate_by = 6
     model= Travel
     template_name= 'travels/travels.html'
     context_object_name= 'travels'
@@ -105,7 +105,7 @@ class ShowTravel(DataMixin, DetailView):
 
 
 class TravelsCategory(DataMixin, ListView):
-    paginate_by = 3
+    paginate_by = 6
     model= Travel
     template_name= 'travels/travels.html'
     context_object_name= 'travels'

@@ -7,7 +7,7 @@
 <div class="headline">
   <h1><span>Все посты</span></h1>
 </div>
-  <nav class="navbar navbar-expand-lg bg-light rounded">
+  <nav class="navbar navbar-expand-lg bg-light" id="navbar">
     <div class="container">
       <a class="navbar-brand"><ya-tr-span data-index="81-0" data-translated="true" data-source-lang="en" data-target-lang="ru" data-value="Navbar" data-translation="Панель rfnt" data-ch="0" data-type="trSpan">Выбор категории путешествия:</ya-tr-span></a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample09" aria-controls="navbarsExample09" aria-expanded="false" >
@@ -40,37 +40,30 @@
   {%get_categories as cats%}
   
     
-  
-  <ul class="list-arcticles">
-    {%for t in travels%}
-    <li>
-      <div class="my-3 p-3 bg-body rounded shadow-sm">
-        <div class="row featurette">
-          
-          <div class="col-md-7">
-            <p class="first">Автор: {{t.author}}</p>
-            <p class="first">Категория: {{t.cat}}</p>
-            <p class="last">Дата публикации: {{t.time_create|date:"d-m-Y"}}</p>
-            <h2>{{t.title}}</h2>
-            <p>{{t.content|linebreaks|truncatewords:50}}</p>
-          </div>
-          <div class="col-md-5">
-              {%if t.photo%}
-                <p><img class="img-arcticle-left thumb" width="400" height="400" src="{{t.photo.url}}"></p>
-              {%endif%}
-          </div>
-          <a href="{{ t.get_absolute_url }}"><button   class="header__btn">Читать пост</button></a>
+    <ul class="s3">
+      
+      {%for t in travels%}
+      <div class="post">
+        <div class="travel_content">
+        <div class="text-center">
+        {%if t.photo%}
+          <p><img class="bd-placeholder-img "  width="350" height="350" src="{{t.photo.url}}"></p>
+        {%endif%}
+        <p class="first">Автор: {{t.author}}</p>
+        <p class="first">Категория: {{t.cat}}</p>
+        <p class="last">Дата публикации: {{t.time_create|date:"d-m-Y"}}</p>
+        <h2>{{t.title}}</h2>
+        <p>{{t.content|linebreaks|truncatewords:10}}</p>
+        <a href="{{ t.get_absolute_url }}"><button   class="header__btn">Читать пост</button></a>
         </div>
       </div>
-        
-        
-      </div>
-        <div class="acrticle-panel">
-          
-        </div>
-      </li>
+    </div>
     {% endfor %} 
-  </ul>
+     
+    </ul>
+
+
+
 {%if page_obj.has_other_pages%}
   <ul class="pagination pagination-sm">
       {%for p in paginator.page_range%}
