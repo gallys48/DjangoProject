@@ -42,7 +42,7 @@
                 </div>
                 <div class="col-lg-3">
                     {% if request.user.is_authenticated %}
-                    <a href="{% url 'usertravels' %}"><button   class="header__btn" href="{% url 'usertravels' %}">{{user.username}}</button></a>
+                    <a href="{% url 'usertravels'%}"><button   class="header__btn" href="{% url 'usertravels' %}">{{user.username}}</button></a>
                     <a href="{% url 'logout' %}"><button class="header__btn" href="{% url 'logout' %}">Выйти</button></a>
                     {%else%}
                     <a href="{% url 'login' %}"><button   class="header__btn">Вход</button></a>

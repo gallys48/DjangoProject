@@ -178,9 +178,10 @@ class UserTravelsList(DataMixin, ListView):
     context_object_name= 'travels'
     allow_empty = False
 
+    
     def get_context_data(self, *,object_list=None,**kwargs):
          context = super().get_context_data(**kwargs)
-         c_def = self.get_user_context(title='Посты пользователя '+str(context['travels'][0].author))
+         c_def = self.get_user_context(title='Посты пользователя '+str(context['travels'][0].author), author = context['travels'][0].author)
          return dict(list(context.items())+(list(c_def.items())))
 
     def get_queryset(self):
