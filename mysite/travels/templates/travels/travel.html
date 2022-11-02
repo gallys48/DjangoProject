@@ -7,14 +7,20 @@
     <div class="row featurette">
       <div class="col-md-7">
         <div class="text-center">
+        
+        
+       
         <h2>{{travel.title}}</h2>
+
       </div>
+      {% autoescape on %}
         <p>{{travel.content|linebreaks}}</p>
+      {% endautoescape %}
+        <div class="text-center">
+        <h3>Отчёт о путешествии:</h3><p>
+        </div>
         <p class="first">Автор: {{travel.author}}</p>
         <p class="first">Категория: {{travel.cat}}</p>
-        <div class="text-center">
-        <h3>Информация про путешествие:</h3><p>
-        </div>
         <p class="last">Дата публикации: {{travel.time_create|date:"d-m-Y"}}</p>
         <p class="last">Дата начала путешествия: {{travel.start_of_the_trip|date:"d-m-Y"}}</p>
         <p class="last">Длительность путешествия: {{travel.get_duration}} дней</p>
@@ -24,7 +30,7 @@
       </div>
       <div class="col-md-5">
           {%if travel.photo%}
-            <p><img class="img-arcticle-left thumb" width="400" height="400" src="{{travel.photo.url}}"></p>
+            <p><img class="img-arcticle-left thumb" width="600" height="600" src="{{travel.photo.url}}"></p>
           {%endif%}
       </div>
       
