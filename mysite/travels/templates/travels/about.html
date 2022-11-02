@@ -1,8 +1,26 @@
 {% extends 'travels/base.html' %}
-
+{%load static%}
 
 {% block content %}
+<div class="headline">
+  <h1><span>О сайте</span></h1>
+</div>
 
-  <h1>{{title}}</h1> 
-  <p>Содержимое главной страницы
+  <div class="row featurette">
+    <div class="col-md-7">
+      <div class="text_about">
+      <div class="text-center">
+        <h3>Не знаете, как провести свой отпуск </h3>
+        <br><h3>Мы верим, что путешествия помогают раскрыть в себе что-то новое. Иначе взглянуть на привычные процессы, придумать что-то нестандартное. Наши поездки как раз такие — они по-настоящему перезагружают и помогают вернуться обновленным, полным энергии и вдохновения. </h3>
+      </div>
+    </div>
+    </div>
+    <div class="col-md-5">
+      <div class="photo">
+        <p><img class="bd-placeholder-img rounded-circle" width="500" height="400" src="{% static  'travels/img/about.png' %}"></p>
+      </div>
+    </div>
+    
+  </div>
+</div>
 {% endblock content %}

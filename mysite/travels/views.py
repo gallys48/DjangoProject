@@ -102,11 +102,11 @@ class ShowTravel(DataMixin, DetailView):
         return dict(list(context.items())+(list(c_def.items())))
 
 class UpdateTravel(DataMixin, UpdateView):
+    form_class = EditTravelForm
     model = Travel
     template_name = 'travels/update_post.html'
     slug_url_kwarg = 'travel_slug'
     success_url = reverse_lazy('usertravels')
-    fields = ['title', 'content', 'photo', 'start_of_the_trip', 'end_of_the_trip', 'expense', 'place', 'cat']
     def get_context_data(self, *,object_list=None,**kwargs):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title=context['travel'])
@@ -117,7 +117,7 @@ class DeleteTravel(DataMixin, DeleteView):
     template_name = 'travels/delete_post.html'
     slug_url_kwarg = 'travel_slug'
     success_url = reverse_lazy('usertravels')
-    fields = ['title', 'slug', 'content', 'photo', 'start_of_the_trip', 'end_of_the_trip', 'expense', 'place', 'cat']
+    
     def get_context_data(self, *,object_list=None,**kwargs):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title=context['travel'])

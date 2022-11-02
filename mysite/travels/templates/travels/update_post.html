@@ -1,9 +1,18 @@
 {% extends 'travels/base.html' %}
  
 {% block content %}
-    <h1>Edit post</h1>
+<div class="headline">
+  <h1><span>Редактирование поста</span></h1>
+</div>
+<div class="form_add">
+<div class="text-center">
+  <h2>Пожалуйста, внесите изменения</h2>
+</div> 
     <form action="" method="post">{% csrf_token %}
       {{ form.as_p }}
-    <input type="submit" value="Update" />
+      <div class="text-center">
+        <button type="submit" class="header__btn">Обновить</button>
+  </div>
 </form>
+</div>
 {% endblock content %} 

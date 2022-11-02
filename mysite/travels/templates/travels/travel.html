@@ -6,8 +6,21 @@
   <div class="my-3 p-4 rounded shadow">
     <div class="row featurette">
       <div class="col-md-7">
+        <div class="text-center">
         <h2>{{travel.title}}</h2>
+      </div>
         <p>{{travel.content|linebreaks}}</p>
+        <p class="first">Автор: {{travel.author}}</p>
+        <p class="first">Категория: {{travel.cat}}</p>
+        <div class="text-center">
+        <h3>Информация про путешествие:</h3><p>
+        </div>
+        <p class="last">Дата публикации: {{travel.time_create|date:"d-m-Y"}}</p>
+        <p class="last">Дата начала путешествия: {{travel.start_of_the_trip|date:"d-m-Y"}}</p>
+        <p class="last">Длительность путешествия: {{travel.get_duration}} дней</p>
+        <p class="last">Затраченные средства: {{travel.expense}}</p>
+        <p class="last">Место путешествия: {{travel.place}}</p>
+       
       </div>
       <div class="col-md-5">
           {%if travel.photo%}

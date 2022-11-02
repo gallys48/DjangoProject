@@ -45,4 +45,20 @@ class RegisterUserForm(UserCreationForm):
 class LoginUserForm(AuthenticationForm):
     username = forms.CharField(label='Логин', widget=forms.TextInput(attrs={'class':'form-input'}))
     password = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'class':'form-input'}))
+
+class EditTravelForm(forms.ModelForm):
+    
+    class Meta:
+       model = Travel
+       fields = ['title',  'content', 'photo', 'start_of_the_trip', 'end_of_the_trip', 'expense', 'place', 'cat']
+
+    title = forms.CharField(max_length=255, label='Заголовок', widget=forms.TextInput(attrs={'class':'form-input'}))
+    content = forms.CharField(widget=forms.Textarea(attrs={'cols':60, 'rows': 10, 'class':'form-input'}),  label='Текст поста')
+    photo = forms.ImageField(label='Фото поста')
+    start_of_the_trip = forms.DateField(label='Дата начала путешествия', widget=AdminDateWidget(attrs={'class':'form-input'}))
+    end_of_the_trip = forms.DateField(label='Дата окончания путешествия', widget=AdminDateWidget(attrs={'class':'form-input'}))
+    expense = forms.CharField(max_length=255, label='Затраты на путешествие', widget=forms.TextInput(attrs={'class':'form-input'}))
+    place = forms.CharField(max_length=255, label='Место путешествия', widget=forms.TextInput(attrs={'class':'form-input'}))
+    cat = forms.ModelChoiceField(queryset=Category.objects.all(),label='Категория', empty_label="Категория не выбрана", )
+    
     

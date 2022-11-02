@@ -31,6 +31,11 @@ class Travel(models.Model):
     def __str__(self):
         return self.title
     
+    @property
+    def get_duration(self):
+        dt=self.end_of_the_trip-self.start_of_the_trip
+        return dt.days
+    
     def get_absolute_url(self):
         return reverse("travel", kwargs={"travel_slug": self.slug})
     

@@ -50,8 +50,6 @@
           <p><img class="bd-placeholder-img "  width="350" height="350" src="{{t.photo.url}}"></p>
         {%endif%}
         <p class="first">Автор: {{t.author}}</p>
-        <p class="first">Категория: {{t.cat}}</p>
-        <p class="last">Дата публикации: {{t.time_create|date:"d-m-Y"}}</p>
         <h2>{{t.title}}</h2>
         <p>{{t.content|linebreaks|truncatechars:30}}</p>
         <a href="{{ t.get_absolute_url }}"><button   class="header__btn">Читать пост</button></a>
