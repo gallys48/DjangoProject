@@ -1,0 +1,82 @@
+{% extends 'travels/base.html' %}
+{%load travels_tags%}
+
+
+
+{% block content %}
+<div class="headline">
+  <h1><span>Все посты</span></h1>
+</div>
+  <nav class="navbar navbar-expand-lg bg-light" id="navbar">
+    <div class="container">
+      <a class="navbar-brand"><ya-tr-span data-index="81-0" data-translated="true" data-source-lang="en" data-target-lang="ru" data-value="Navbar" data-translation="Панель rfnt" data-ch="0" data-type="trSpan">Выбор категории путешествия:</ya-tr-span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample09" aria-controls="navbarsExample09" aria-expanded="false" >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          {%if cat_selected == 0 %}
+          <li class="selected">Все категории</li>
+      {% else %}
+      <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="{%url 'travels'%}"><ya-tr-span data-index="82-0" data-translated="true" data-source-lang="en" data-target-lang="ru" data-value="Home" data-translation="Отдых" data-ch="0" data-type="trSpan">Все категории</ya-tr-span></a>
+      </li>
+      {%endif%}
+      
+      {%for c in cats%}
+          {%if c.pk == cat_selected%}
+            <li class="selected">{{c.title}}</li>
+          {%else%}
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{{c.get_absolute_url}}"><ya-tr-span data-index="82-0" data-translated="true" data-source-lang="en" data-target-lang="ru" data-value="Home" data-translation="Отдых" data-ch="0" data-type="trSpan">{{c.title}}</ya-tr-span></a>
+          </li>
+          {%endif%}
+      {%endfor%}
+        </ul>
+      </div>
+    </div>
+  </nav>
+  {%get_categories as cats%}
+  
+    
+    <ul class="s3">
+      
+      {%for t in travels%}
+      <div class="post">
+        <div class="travel_content">
+        <div class="text-center">
+        {%if t.photo%}
+          <p><img class="bd-placeholder-img "  width="350" height="350" src="{{t.photo.url}}"></p>
+        {%endif%}
+        <p class="first">Автор: {{t.author}}</p>
+        <h2>{{t.title}}</h2>
+        <p>{{t.content|linebreaks|truncatechars:30}}</p>
+        <a href="{{ t.get_absolute_url }}"><button   class="header__btn">Читать пост</button></a>
+        </div>
+      </div>
+    </div>
+    {% endfor %} 
+     
+    </ul>
+
+
+<div class="pagination-center">
+{%if page_obj.has_other_pages%}
+
+  <ul class="pagination pagination ">
+      {%for p in paginator.page_range%}
+      {% if page_obj.number == p %}
+      <li class="page-item active" aria-current="page">{{p}}</li>
+      {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{p}}">{{p}}</a>
+      </li>
+      {%endif%}
+      {%endfor%}
+  </ul>
+
+  
+{%endif%}
+</div>
+{% endblock content %}
