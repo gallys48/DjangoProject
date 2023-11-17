@@ -19,7 +19,7 @@ class AddTravelForm(forms.Form):
     start_of_the_trip = forms.DateField(label='Дата начала путешествия', widget=AdminDateWidget(attrs={'class':'form-input'}))
     end_of_the_trip = forms.DateField(label='Дата окончания путешествия', widget=AdminDateWidget(attrs={'class':'form-input'}))
     expense = forms.CharField(max_length=255, label='Затраты на путешествие', widget=forms.TextInput(attrs={'class':'form-input'}))
-    place = forms.CharField(max_length=255, label='Место путешествия', widget=forms.TextInput(attrs={'class':'form-input'}))
+    country = forms.ModelChoiceField(queryset=Country.objects.all(),label='Страна путешествия', empty_label="Страна путешествия не выбрана", )
     cat = forms.ModelChoiceField(queryset=Category.objects.all(),label='Категория', empty_label="Категория не выбрана", )
     # class Meta:
     #     model = Travel
@@ -50,7 +50,7 @@ class EditTravelForm(forms.ModelForm):
     
     class Meta:
        model = Travel
-       fields = ['title',  'content', 'photo', 'start_of_the_trip', 'end_of_the_trip', 'expense', 'place', 'cat']
+       fields = ['title',  'content', 'photo', 'start_of_the_trip', 'end_of_the_trip', 'expense', 'country', 'cat']
 
     title = forms.CharField(max_length=255, label='Заголовок', widget=forms.TextInput(attrs={'class':'form-input'}))
     content = forms.CharField(widget=forms.Textarea(attrs={'cols':60, 'rows': 10, 'class':'form-input'}),  label='Текст поста')
@@ -58,7 +58,45 @@ class EditTravelForm(forms.ModelForm):
     start_of_the_trip = forms.DateField(label='Дата начала путешествия', widget=AdminDateWidget(attrs={'class':'form-input'}))
     end_of_the_trip = forms.DateField(label='Дата окончания путешествия', widget=AdminDateWidget(attrs={'class':'form-input'}))
     expense = forms.CharField(max_length=255, label='Затраты на путешествие', widget=forms.TextInput(attrs={'class':'form-input'}))
-    place = forms.CharField(max_length=255, label='Место путешествия', widget=forms.TextInput(attrs={'class':'form-input'}))
     cat = forms.ModelChoiceField(queryset=Category.objects.all(),label='Категория', empty_label="Категория не выбрана", )
-    
+    country = forms.ModelChoiceField(queryset=Country.objects.all(),label='Категория', empty_label="Страна путешествия не выбрана", )
+
+class UserUpdateForm(forms.ModelForm):
+
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'first_name', 'last_name')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs.update({
+                'class': 'form-input',
+                'autocomplete': 'off'
+            })
+
+    def clean_email(self):
+        """
+        Проверка email на уникальность
+        """
+        email = self.cleaned_data.get('email')
+        username = self.cleaned_data.get('username')
+        if email and User.objects.filter(email=email).exclude(username=username).exists():
+            raise forms.ValidationError('Email адрес должен быть уникальным')
+        return email
+
+
+class ProfileUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ('slug', 'birth_date', 'bio', 'avatar')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs.update({
+                'class': 'form-input',
+                'autocomplete': 'off'
+            })    
     

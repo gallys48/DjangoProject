@@ -25,7 +25,12 @@
         <a href="{{t.author.profile.get_absolute_url}}" class="first"><button>Автор: {{t.author}}</button></a>
         <h2>{{t.title}}</h2>
         <p>{{t.content|linebreaks|truncatechars:30}}</p>
-        <a href="{{ t.get_absolute_url }}"><button   class="header__btn">Читать пост</button></a>
+        <a href="{{ t.get_absolute_url }}"><button   class="header__btn">Читать</button></a>
+        <a href="{{ t.get_update_url }}"><button   class="header__btn">Изменить</button></a>
+        <p></p>
+
+        <a href="{{ t.get_delete_url }}"><button   class="header__btn">Удалить</button></a>
+        </div>
         </div>
       </li>
       {% endfor %} 

@@ -1,0 +1,35 @@
+{% extends 'travels/base.html' %}
+{%load static%}
+
+{% block content %}
+<li>
+  <div class="my-3 p-4 rounded shadow">
+    <div class="row featurette">
+      <div class="col-md-7">
+        <div class="text-center">
+        
+        
+       
+        <h2>{{ profile }}</h2>
+
+      </div>
+        <p class="first">Никнейм: {{ profile.user.username }}</p>
+        {% if profile.user.get_full_name %} <p class="first">Имя и фамилия: {{ profile.user.get_full_name }}</p> {% endif %}
+        <p class="first">Почта: {{ profile.user.email }}</p>
+        <p class="first">Заходил: {{ profile.user.last_login }}</p>
+        <p class="last">Дата рождения: {{ profile.birth_date }}</p>
+        <p class="last">О себе: {{ profile.bio }}</p>
+       
+      </div>
+      <a href="{{ profile.get_my_travels_url }}"><button   class="header__btn">Мои посты</button></a>
+      <a href="{{ profile.get_update_profile_url }}"><button   class="header__btn">Редактировать профиль</button></a>
+    </div>  
+    </div>
+    <div class="col-md-5">
+      <div class="photo">
+        <p><img class="bd-placeholder-img rounded-circle" width="200" height="200" src="{{profile.avatar.url}}"></p>
+      </div>
+    </div>
+  </div>
+</li>
+{% endblock content %}

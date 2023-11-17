@@ -5,7 +5,7 @@
 
 {% block content %}
 <div class="headline">
-  <h1><span>Все посты</span></h1>
+  <h1><span>{{title}}</span></h1>
 </div>
   <nav class="navbar navbar-expand-lg bg-light" id="navbar">
     <div class="container">
@@ -49,7 +49,7 @@
         {%if t.photo%}
           <p><img class="bd-placeholder-img "  width="350" height="350" src="{{t.photo.url}}"></p>
         {%endif%}
-        <p class="first">Автор: {{t.author}}</p>
+        <a href="{{t.author.profile.get_absolute_url}}" class="first"><button>Автор: {{t.author}}</button></a>
         <h2>{{t.title}}</h2>
         <p>{{t.content|linebreaks|truncatechars:30}}</p>
         <a href="{{ t.get_absolute_url }}"><button   class="header__btn">Читать пост</button></a>

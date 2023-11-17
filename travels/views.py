@@ -1,12 +1,13 @@
 from django.contrib.auth.views import LoginView
-from django.http import HttpResponse, HttpResponseNotFound, Http404
-from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponseNotFound
+from django.shortcuts import render, redirect
 from django.views.generic import *
 from django.contrib.auth.forms import *
 from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import login_required
 from django.urls import *
 from .utils import DataMixin
+from django.db import transaction
 
 from  .forms import *
 from .models import *
@@ -23,20 +24,6 @@ class IndexPage(DataMixin, TemplateView):
          c_def = self.get_user_context(title="Главная страница")
          return dict(list(context.items())+(list(c_def.items())))
      
-# def index(request):
-#     context = {
-#         'menu':menu,
-#         'title':'Главная страница'
-#     }
-#     return render(request, 'travels/index.html', context=context)
-
-# def about(request):
-#     context = {
-#         'menu':menu,
-#         'title':'О сайте'
-#     }
-#     return render(request, 'travels/about.html', context=context)
-
 class AboutPage(DataMixin, TemplateView):
     template_name= 'travels/about.html'
     
@@ -50,7 +37,6 @@ class TravelsList(DataMixin, ListView):
     model= Travel
     template_name= 'travels/travels.html'
     context_object_name= 'travels'
-
     def get_context_data(self, *,object_list=None,**kwargs):
          context = super().get_context_data(**kwargs)
          c_def = self.get_user_context(title="Все посты")
@@ -58,6 +44,8 @@ class TravelsList(DataMixin, ListView):
 
     def get_queryset(self):
         return Travel.objects.filter(is_published=True)
+    
+    
     
 
 @login_required
@@ -106,22 +94,28 @@ class UpdateTravel(DataMixin, UpdateView):
     model = Travel
     template_name = 'travels/update_post.html'
     slug_url_kwarg = 'travel_slug'
-    success_url = reverse_lazy('usertravels')
+    success_url = reverse_lazy('my_usertravels')
     def get_context_data(self, *,object_list=None,**kwargs):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title=context['travel'])
         return dict(list(context.items())+(list(c_def.items())))
+    
+    def get_success_url(self):
+        return reverse_lazy('my_usertravels', kwargs={'my_slug': self.object.author.profile.slug})
 
 class DeleteTravel(DataMixin, DeleteView):
     model = Travel
     template_name = 'travels/delete_post.html'
     slug_url_kwarg = 'travel_slug'
-    success_url = reverse_lazy('usertravels')
+    success_url = reverse_lazy('my_usertravels')
     
     def get_context_data(self, *,object_list=None,**kwargs):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title=context['travel'])
         return dict(list(context.items())+(list(c_def.items())))
+    
+    def get_success_url(self):
+        return reverse_lazy('my_usertravels', kwargs={'my_slug': self.object.author.profile.slug})
         
 
 
@@ -156,12 +150,12 @@ class RegisterUser(DataMixin, CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect('travels')
+        return redirect('my_profile_detail')
 
 class LoginUser(DataMixin, LoginView):
     form_class = LoginUserForm
     template_name = 'travels/login.html'
-    success_url = reverse_lazy('usertravels')
+    success_url = reverse_lazy('my_profile_detail')
     def get_context_data(self, *,object_list=None,**kwargs):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title='Авторизация')
@@ -176,13 +170,91 @@ class UserTravelsList(DataMixin, ListView):
     model= Travel
     template_name= 'travels/user_travels.html'
     context_object_name= 'travels'
-    allow_empty = False
+    allow_empty = True
+    slug_url_kwarg = 'profile_user'
 
     
     def get_context_data(self, *,object_list=None,**kwargs):
          context = super().get_context_data(**kwargs)
          c_def = self.get_user_context(title='Посты пользователя '+str(context['travels'][0].author), author = context['travels'][0].author)
          return dict(list(context.items())+(list(c_def.items())))
+    
+    def get_queryset(self):
+        return Travel.objects.filter(author=self.kwargs['profile_user'], is_published=True)
 
+class MyTravelsList(DataMixin, ListView):
+    paginate_by = 3
+    model= Travel
+    template_name= 'travels/my_travels.html'
+    context_object_name= 'travels'
+    allow_empty = True
+    slug_url_kwarg = 'my_slag'
+
+    
+    def get_context_data(self, *,object_list=None,**kwargs):
+         context = super().get_context_data(**kwargs)
+         c_def = self.get_user_context(title='Посты пользователя '+str(context['travels'][0].author), author = context['travels'][0].author)
+         return dict(list(context.items())+(list(c_def.items())))
+    
     def get_queryset(self):
         return Travel.objects.filter(author=self.request.user)
+    
+class ProfileDetailView(DataMixin, DetailView):
+
+    model = Profile
+    context_object_name = 'profile'
+    template_name = 'travels/profile_detail.html'
+    slug_url_kwarg = 'profile_slug'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title=f'Страница пользователя: {self.object.user.username}')
+        return dict(list(context.items())+(list(c_def.items())))
+
+class MyProfileDetailView(DataMixin, DetailView):
+
+    model = Profile
+    context_object_name = 'profile'
+    template_name = 'travels/my_profile_detail.html'
+    slug_url_kwarg = 'profile_slug'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title=f'Страница пользователя: {self.object.user.username}')
+        return dict(list(context.items())+(list(c_def.items())))
+
+class ProfileUpdateView(DataMixin, UpdateView):
+
+    model = Profile
+    form_class = ProfileUpdateForm
+    template_name = 'travels/update_profile.html'
+    slug_url_kwarg = 'profile_slug'
+    success_url = reverse_lazy('my_profile_detail')
+    
+
+    def get_object(self, queryset=None):
+        return self.request.user.profile
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title=f'Редактирование профиля пользователя: {self.request.user.username}')
+        if self.request.POST:
+            context['user_form'] = UserUpdateForm(self.request.POST, instance=self.request.user)
+        else:
+            context['user_form'] = UserUpdateForm(instance=self.request.user)
+        return dict(list(context.items())+(list(c_def.items())))
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        user_form = context['user_form']
+        with transaction.atomic():
+            if all([form.is_valid(), user_form.is_valid()]):
+                user_form.save()
+                form.save()
+            else:
+                context.update({'user_form': user_form})
+                return self.render_to_response(context)
+        return super(ProfileUpdateView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('profile_detail', kwargs={'slug': self.object.slug})
