@@ -19,10 +19,14 @@ class ProfileAdmin(admin.ModelAdmin):
 class CountryAdmin(admin.ModelAdmin):
     list_display = ('title', 'slug')
     list_display_links = ('title', 'slug')
+
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ("travel", "username","text", "created_date")
     
 
 admin.site.register(Travel, TravelAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(Country, CountryAdmin)
+admin.site.register(Comment, CommentAdmin)
 

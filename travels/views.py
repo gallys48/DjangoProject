@@ -1,13 +1,16 @@
 from django.contrib.auth.views import LoginView
-from django.http import HttpResponseNotFound
-from django.shortcuts import render, redirect
+from django.http import HttpResponseNotFound, HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import *
 from django.contrib.auth.forms import *
 from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect
+
 from django.urls import *
 from .utils import DataMixin
 from django.db import transaction
+import json
 
 from  .forms import *
 from .models import *
@@ -79,15 +82,30 @@ def pageNotFound(request, exception):
     return HttpResponseNotFound("<h1>Страница не найдена</h1>")
 
 
-class ShowTravel(DataMixin, DetailView):
-    model = Travel
-    template_name = 'travels/travel.html'
-    slug_url_kwarg = 'travel_slug'
-    context_object_name = 'travel'
-    def get_context_data(self, *,object_list=None,**kwargs):
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title=context['travel'])
-        return dict(list(context.items())+(list(c_def.items())))
+class ShowTravel(View):
+
+    def get(self, request, slug, *args, **kwargs):
+        travel = get_object_or_404(Travel, slug=slug)
+        comment_form = CommentForm()
+        return render(request, 'travels/travel.html', context={
+            'travel': travel,
+            'menu':menu,
+            'comment_form': comment_form
+    })
+    
+    
+    def post(self, request, slug, *args, **kwargs):
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            text = request.POST['text']
+            username = self.request.user
+            travel = get_object_or_404(Travel, slug = slug)
+            comment = Comment.objects.create(travel=travel, username=username, text=text)
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+        return render(request, 'travels/travel.html', context={
+            'comment_form': comment_form
+        })
+
 
 class UpdateTravel(DataMixin, UpdateView):
     form_class = EditTravelForm

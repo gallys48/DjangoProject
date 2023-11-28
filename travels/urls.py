@@ -3,6 +3,9 @@ from  .views import *
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.auth.decorators import login_required
+from travels.models import *
+
 
 urlpatterns = [
     path('', IndexPage.as_view(), name="index"),
@@ -19,9 +22,8 @@ urlpatterns = [
     path('<slug:profile_slug>', ProfileDetailView.as_view(), name='profile_detail'),
     re_path('travels/(?P<travel_slug>[-a-zA-Z0-9-а-яA]+)/delete/', DeleteTravel.as_view(), name='travel_delete'),
     re_path('travels/(?P<travel_slug>[-a-zA-Z0-9-а-яA]+)/edit/', UpdateTravel.as_view(), name='travel_update'),
-    re_path('travels/(?P<travel_slug>[-a-zA-Z0-9-а-яA]+)', ShowTravel.as_view(), name="travel"),
+    re_path('travels/(?P<slug>[-a-zA-Z0-9-а-яA]+)', ShowTravel.as_view(), name="travel"),
     path('category/<slug:cat_slug>', TravelsCategory.as_view(), name='category' ),
-
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler404 = pageNotFound

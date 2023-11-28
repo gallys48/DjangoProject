@@ -26,7 +26,32 @@
         <p class="last">Длительность путешествия: {{travel.get_duration}} дней</p>
         <p class="last">Затраченные средства: {{travel.expense}}</p>
         <p class="last">Место путешествия: {{travel.place}}</p>
-       
+        <div class="card my-4">
+          <h5 class="card-header">Прокомментируй:</h5>
+          {% if user.is_authenticated %}
+          <div class="card-body">
+              <form method="post">
+                  {% csrf_token %}
+                  <div class="form-group">
+                      {{ comment_form.text }}
+                  </div>
+                  <button type="submit" class="btn btn-primary">Отправить</button>
+              </form>
+          </div>
+          {% else %}
+          <h6 class="card-header"><a href="{% url 'login' %}">Авторизуйтесь</a> или <a href="{% url 'register' %}">зарегистрируйтесь</a> чтобы оставить комментарий</h6>
+          {% endif %}
+      </div>
+      {% for comment in travel.comments.all %}
+      <div class="media mb-4">
+          <img class="d-flex mr-3 rounded-circle" width="25" height="25" src="{{comment.username.profile.avatar.url}}" alt="">
+          <div class="media-body">
+              <h5 class="mt-0">{{comment.username}}</h5>
+              {{comment.text}}
+              {{comment.created_date|date:"d-m-Y H:i:s"}}
+          </div>
+      </div>
+      {% endfor %}
       </div>
       <div class="col-md-5">
           {%if travel.photo%}

@@ -1,11 +1,13 @@
+from datetime import timezone
 from django.db import models
+from django.db.models import Sum
 from django.contrib.auth.models import User
 from django.utils.text import slugify
 from django.urls import reverse
-from django.contrib.auth import get_user_model
-from django.core.validators import FileExtensionValidator
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.contrib.postgres.fields import ArrayField
+
 
 def gen_slug(s):
   new_slug = slugify(s, allow_unicode=True)
@@ -35,7 +37,7 @@ class Travel(models.Model):
         return dt.days
     
     def get_absolute_url(self):
-        return reverse("travel", kwargs={"travel_slug": self.slug})
+        return reverse("travel", kwargs={"slug": self.slug})
     
     def get_my_travels_url(self):
         return reverse("my_travel", kwargs={"travel_slug": self.slug})
@@ -138,3 +140,14 @@ class Country(models.Model):
         verbose_name = 'Страна'
         verbose_name_plural = 'Страны'
 
+class Comment(models.Model):
+    travel = models.ForeignKey(Travel, on_delete=models.CASCADE, related_name='comments')
+    username = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_name')
+    text = models.TextField()
+    created_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_date']
+
+    def __str__(self):
+        return self.text
