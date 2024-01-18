@@ -168,7 +168,7 @@ class RegisterUser(DataMixin, CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect('my_profile_detail')
+        return redirect('travels')
 
 class LoginUser(DataMixin, LoginView):
     form_class = LoginUserForm
