@@ -50,7 +50,7 @@ ul, li {
 }
 
 .header__btn:hover {
-  background-color: #3B6993; 
+  background: rgba(72, 72, 72, 0.59);
   color: white;
 }
 
@@ -63,6 +63,122 @@ ul, li {
 
 /* CUSTOMIZE THE CAROUSEL
 -------------------------------------------------- */
+.blockSlider {
+  display: flex;
+  max-width: 100%;
+  width: 100%;
+  height: 80%;
+  margin-left:auto;
+  margin-right: auto;
+  position: relative;
+  overflow: hidden;
+}
+
+.FullArea{
+  display: flex;
+  width: 100%;
+  height: 80%;
+  align-items: center;
+  justify-content: center;
+}
+
+.pointsAreaSize {
+  width: 150px;
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  bottom: 5%;
+}
+
+.point {
+  display: flex;
+  width: 12px;
+  height: 12px;
+  background: rgb(229, 229, 229);
+  border-radius: 100px;
+  cursor: pointer;
+}
+
+.point:hover{
+  
+  background: rgba(72, 72, 72, 0.59);
+  border: 1px solid white;
+}
+
+.imagesArea{
+  width: 100%;
+  height: 0%;
+  overflow: hidden;
+}
+
+.imageSlider{
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 80%;
+  overflow: hidden;
+  animation-name: Animation;
+  animation-duration: 1s;
+  filter: brightness(60%);
+}
+
+.activeImage{
+  background: rgba(72, 72, 72, 0.59);
+  border: 1px solid white;
+  display: flex;
+  
+  
+}
+
+.btnsAreaSize{
+  position: absolute;
+  display: flex;
+  width: 95%;
+  justify-content: space-between;
+}
+
+i.fa.fa-angle-left, i.fa.fa-angle-right{
+  color: #7ea6c8;
+  font-size: 24px;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.blockArrow{
+  display: flex;
+  width: 40px;
+  height: 40px;
+  background-color: white;
+  border: 1ps solid white;
+  border-radius: 50px;
+  align-items: center;
+  justify-content: center;
+}
+.blockArrow:hover{
+  background: rgba(72, 72, 72, 0.59);
+  border: 1px solid white;
+  color: white;
+  cursor: pointer;
+}
+
+.blockArrow:active{
+  background: rgba(39, 39, 39, 0.59);
+  border: 1px solid white;
+  color: white;
+  cursor: pointer;
+}
+
+@-webkit-keyframes Animation {
+  0% {opacity: 0;}
+  100%{opacity: 1;}
+}
+
+
+
+
+
+
 
 /* Carousel base class */
 .carousel {
@@ -138,20 +254,17 @@ ul, li {
 .form_log {
   border-radius: 5px;
   background-color: #f2f2f2;
-  padding: 20px;
-  display: inline-block;
-  padding: 50px;
-
+  padding: 3%;
+  margin-top: 40px;
   border: 2px solid #3B6993;
   box-shadow: 0 0 10px rgba(0,0,0,0.5);
-  margin-top: 25px;
-  position: fixed;
-  top:50%;
-  left: 50%;
-  margin: -280px 0 0 -283px;
-  
- 
+  width: 38%;
+  position: absolute;
+  justify-content: center; 
+  align-items: center;
+  left: 31%;
 }
+
 
 .form_log h1 {
   font-size: 30px;
@@ -183,24 +296,34 @@ ul, li {
   margin-top: 35px;
 }
 
+/*#post {  display: flex;  flex-direction: row;  justify-content: flex-start;}*/
+
+
 
 ul.s3 {
   display: flex;
   flex-wrap: wrap;
-  margin-left: 13%;
+  margin-left: 2%;
+  /*margin-right: 10%;*/
 }
 
 
 .post{
  border-radius: 12px;
+ border: 2px solid #bce8f1;
  background-color: #f2f2f2;
- margin: 10px;
+ margin: 20px;
+ 
+
 }
 
 .travel_content {
-  margin: 20px;
+  margin: 15px;
+  margin-top: 30px;
   width: 400px; 
 }
+
+
 
 /* Добавление поста */
 .add_post_right {
@@ -251,10 +374,142 @@ ul.s3 {
 }
 
 .pagination-center{
-  margin: 0 auto;
+  margin: 1px;
   display: flex;
   align-content: stretch;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
 }
+
+.title{
+  margin-top: 10px;
+}
+
+/*Комментарии*/
+.panelinfo{
+  border: 2px solid #bce8f1;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.panelheading {
+  color: #3B6993;
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+  padding: 10px 15px;
+  border-bottom: 1px solid transparent;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px
+}
+
+.panel-body{
+  padding: 15px;
+}
+
+.form-control{
+  padding: 15px;
+}
+
+.btncom{
+  float: right;
+}
+.pull-left{
+  float: left!important;
+  padding-right: 7px;
+}
+
+.rounded-circle{
+  width: 25px;
+  height: 25px;
+}
+
+.usernamecomment{
+  color: #3B6993;
+  font-weight: 700;
+}
+.media-body{
+  display: table-cell;
+  vertical-align: top;
+  overflow: hidden;
+}
+
+.imgpost{
+  margin-left: 50px;
+  width:600px;
+  height:600px;
+}
+
+/*Личный кабинет*/
+
+
+.panel-heading{
+  background-color: #fff;
+  margin-bottom: 2px;
+  padding: 20px;
+  border-radius: 5px;
+}
+.panel-body{
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 20px;
+}
+
+
+.photoprofile{
+ border-radius: 100%;
+ border: 5px solid #bdc3c7;
+ width: 180px;
+ height: 180px;
+ margin-bottom: 10px;
+}
+
+
+
+
+#main {
+  margin-top: 5%;
+  background-color: #f2f2f2;
+  padding: 20px;
+ -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+  border-bottom: 4px solid #ddd;
+}
+
+.table {
+	width: 100%;
+	border: none;
+	margin-bottom: 20px;
+}
+.table th {
+	font-weight: bold;
+	text-align: left;
+	border: none;
+	padding: 10px 15px;
+	background: #f0eded;
+	font-size: 14px;
+	border-bottom: 1px solid #cecccc;
+}
+.table tbody td {
+	text-align: left;
+  border-bottom: 1px solid #cecccc;
+	padding: 10px 15px;
+	font-size: 14px;
+	vertical-align: top;
+}
+
+.aboutptoto{
+  border-radius: 100%;
+  border: 5px solid #bdc3c7;
+  width: 180px;
+  height: 180px;
+  margin-bottom: 10px;
+ 
+}
+
+.textabout{
+margin-left: 5%;
+}  

@@ -39,43 +39,48 @@
   </nav>
   {%get_categories as cats%}
   
+  
+
+
     
     <ul class="s3">
       
       {%for t in travels%}
       <div class="post">
         <div class="travel_content">
-        <div class="text-center">
-        {%if t.photo%}
-          <p><img class="bd-placeholder-img "  width="350" height="350" src="{{t.photo.url}}"></p>
-        {%endif%}
-        <a href="{{t.author.profile.get_absolute_url}}" class="first"><button>Автор: {{t.author}}</button></a>
-        <h2>{{t.title}}</h2>
-        <p>{{t.content|linebreaks|truncatechars:30}}</p>
-        <a href="{{ t.get_absolute_url }}"><button   class="header__btn">Читать пост</button></a>
+          <div class="text-center">
+            {%if t.photo%}
+              <p><img class="bd-placeholder-img "  width="350" height="350" src="{{t.photo.url}}"></p>
+            {%endif%}
+            <a href="{{t.author.profile.get_absolute_url}}" class="first"><button>Автор: {{t.author}}</button></a>
+            <h2 class="title">{{t.title|truncatechars:22}}</h2>
+            <p>{{t.content|linebreaks|truncatechars:30}}</p>
+            <a href="{{ t.get_absolute_url }}"><button   class="header__btn">Читать пост</button></a>
+            
+          </div>
         </div>
       </div>
-    </div>
-    {% endfor %} 
+      {% endfor %} 
+    </ul>
      
 
 
-<div class="pagination-center">
-{%if page_obj.has_other_pages%}
+  <div class="pagination-center">
+    {%if page_obj.has_other_pages%}
 
-  <ul class="pagination pagination ">
-      {%for p in paginator.page_range%}
-      {% if page_obj.number == p %}
-      <li class="page-item active" aria-current="page">{{p}}</li>
-      {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
-      <li class="page-item">
-        <a class="page-link" href="?page={{p}}">{{p}}</a>
-      </li>
-      {%endif%}
-      {%endfor%}
-  </ul>
-
-  
-{%endif%}
+      <ul class="pagination pagination ">
+        {%for p in paginator.page_range%}
+          {% if page_obj.number == p %}
+          <li class="page-item_active" aria-current="page">{{p}}</li>
+          {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{p}}">{{p}}</a>
+          </li>
+          {%endif%}
+        {%endfor%}
+      </ul>
+    {%endif%}
+  </div>
 </div>
+
 {% endblock content %}

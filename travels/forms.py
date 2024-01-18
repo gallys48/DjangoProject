@@ -58,8 +58,8 @@ class EditTravelForm(forms.ModelForm):
     start_of_the_trip = forms.DateField(label='Дата начала путешествия', widget=AdminDateWidget(attrs={'class':'form-input'}))
     end_of_the_trip = forms.DateField(label='Дата окончания путешествия', widget=AdminDateWidget(attrs={'class':'form-input'}))
     expense = forms.CharField(max_length=255, label='Затраты на путешествие', widget=forms.TextInput(attrs={'class':'form-input'}))
+    country = forms.ModelChoiceField(queryset=Country.objects.all(),label='Страна путешествия', empty_label="Страна путешествия не выбрана", )
     cat = forms.ModelChoiceField(queryset=Category.objects.all(),label='Категория', empty_label="Категория не выбрана", )
-    country = forms.ModelChoiceField(queryset=Country.objects.all(),label='Категория', empty_label="Страна путешествия не выбрана", )
 
 class UserUpdateForm(forms.ModelForm):
 
@@ -75,16 +75,6 @@ class UserUpdateForm(forms.ModelForm):
                 'class': 'form-input',
                 'autocomplete': 'off'
             })
-
-    def clean_email(self):
-        """
-        Проверка email на уникальность
-        """
-        email = self.cleaned_data.get('email')
-        username = self.cleaned_data.get('username')
-        if email and User.objects.filter(email=email).exclude(username=username).exists():
-            raise forms.ValidationError('Email адрес должен быть уникальным')
-        return email
 
 
 class ProfileUpdateForm(forms.ModelForm):
@@ -108,6 +98,6 @@ class CommentForm(forms.ModelForm):
         widgets = {
             'text': forms.Textarea(attrs={
                 'class': 'form-control',
-                'rows': 3
+                'rows': 3, 'placeholder':"Оставьте Ваш комментарий"
             }),
         }   

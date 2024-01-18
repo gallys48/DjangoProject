@@ -275,4 +275,4 @@ class ProfileUpdateView(DataMixin, UpdateView):
         return super(ProfileUpdateView, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('profile_detail', kwargs={'slug': self.object.slug})
+        return reverse_lazy('my_profile_detail', kwargs={'profile_slug': self.object.slug})
